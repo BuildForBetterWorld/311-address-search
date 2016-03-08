@@ -13,6 +13,9 @@ chrome.runtime.onMessage.addListener(
 		chrome.browserAction.setIcon({path: "icon16-red.png",
 			tabId: sender.tab.id
 		});
+		chrome.browserAction.setPopup({popup: "popup.html",
+			tabId: sender.tab.id
+		})
 	}
 });
 

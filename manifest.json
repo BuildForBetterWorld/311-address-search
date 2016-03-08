@@ -20,8 +20,8 @@
 	},
 	"browser_action": {
 		"default_title": "311",
-		"default_icon": "icon16.png",
-		"default_popup": "popup.html"
+		"default_icon": "icon16.png"
+		//"default_popup": "popup.html"
 	},
 	"icons": {
 		"16": "icon16.png",
