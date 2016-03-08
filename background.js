@@ -1,9 +1,11 @@
-// $(document).ready(function(){
-//   var div = document.getElementById("top_bar");
-//   alert(div.innerHTML);
-// });
-chrome.browserAction.onClicked.addListener(function(tab) {
-	chrome.tabs.executeScript({
-		file: 'content.js'
-	});
+
+var address = null;
+
+chrome.runtime.onMessage.addListener(
+  function(request, sender, sendResponse) {
+  	if (request !== {}) {
+  		address = request;
+  		chrome.browserAction.setIcon({path: "red.png"});
+  	} 
 });
+

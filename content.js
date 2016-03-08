@@ -1,16 +1,11 @@
+// make request
+// var url = "https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27455%20Broadway%27";
 
-// // make XMLHttpRequest  
-// function reqListener() {
-// 	console.log(this.responseText);
+// if (window == top) {
+// 	chrome.runtime.onRequest.addListener(function(req, sender, sendResponse) {
+//     sendResponse(contentLogic());
+//   });
 // }
-
-// var req = new XMLHttpRequest();
-// req.addEventListener("load", reqListener);
-// req.open("GET", url);
-// req.send();
-
-// format address here
-// var rawAddress = '444 7th Avenue #88'
 
 function cleanAddress(rawAddress) {
 	//This section splits any address into an array
@@ -37,30 +32,30 @@ function cleanAddress(rawAddress) {
 	// console.log(urlArray)
 }
 
-// make request
-// var url = "https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27455%20Broadway%27";
+//function contentLogic() {
+	setTimeout(function () {
+		// identify website and grab building address
+		var rawAddress = document.getElementsByTagName('h1')[0].textContent;
+		//console.log(rawAddress);
+		var url = cleanAddress(rawAddress);
+		//console.log(url);
 
-setTimeout(function () {
-	// identify website and grab building address
-	var rawAddress = document.getElementsByTagName('h1')[0].textContent;
-	console.log(rawAddress);
-	var url = cleanAddress(rawAddress);
-	console.log(url);
-
-	var response = {};
-	$.ajax({
-		url: url,
-		crossDomain: true,
-		success: function(res) {
-			console.log(res);
-			chrome.runtime.sendMessage(res);
-		},
-		error: function(res) {
-			console.log(res);
-			chrome.runtime.sendMessage(res);
-		}
-	});
-}, 2000);
+		var response = {};
+		$.ajax({
+			url: url,
+			crossDomain: true,
+			success: function(res) {
+				console.log("CONTENT: ");
+				console.log(res);
+				chrome.runtime.sendMessage(res);
+			},
+			error: function(res) {
+				//console.log(res);
+				chrome.runtime.sendMessage(res);
+			}
+		});
+	}, 2000);
+//}
 
 
 
