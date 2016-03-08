@@ -8,6 +8,7 @@ find311Data();
 
 function cleanTruliaAddress() {
 	var rawAddress = document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent;
+
 }
 
 function cleanStreetEasyAddress() {
@@ -79,4 +80,5 @@ function find311Data() {
 			//console.log("sent err: ", res);
 		}
 	});
+}
 
