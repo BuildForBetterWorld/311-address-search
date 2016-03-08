@@ -1,10 +1,21 @@
 // TO DO
 // ~ match on zip code to make sure we're getting the right borough
+// zumper: <h1 class="details-address">
+// trulia: <span itemprop="streetAddress"> 
+// zillow: <header class="addr"> 
 
 
 find311Data();
 
-function cleanAddress(rawAddress) {
+function cleanTruliaAddress() {
+	var rawAddress = document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent;
+
+}
+
+function cleanStreetEasyAddress() {
+	// obtain raw address 
+	var rawAddress = document.getElementsByTagName('h1')[0].textContent;
+
 	//This section splits any address into an array
 	var regexNoApt = /\s(\S.*)\s#/
 	var addressNoApt = regexNoApt.exec(rawAddress)[1]
@@ -13,6 +24,7 @@ function cleanAddress(rawAddress) {
 	//This section fixes the number
 	var regexRemoveNd = /(\d+)(st|nd|rd|th)/
 	var addressRemoveNd = regexRemoveNd.exec(addressArray[1])
+	alert(addressRemoveNd);
 	var cleanAddressArray = []
 
 	if (addressRemoveNd) {
@@ -29,10 +41,20 @@ function cleanAddress(rawAddress) {
 }
 
 function find311Data() {
-	// identify website and grab building address
-	var rawAddress = document.getElementsByTagName('h1')[0].textContent;
-	var url = cleanAddress(rawAddress);
-
+	// identify website and compute api url
+	var site = document.URL;
+	if (site.includes("trulia")) {
+		var url = cleanTruliaAddress();
+	} else if (site.includes("streeteasy")) {
+		var url = cleanStreetEasyAddress();
+	} else if (site.includes("zumper")) {
+		var url = cleanZumperAddress();
+	} else if (site.includes("zillow")) {
+		var url = cleanZillowAddress();
+	} else {
+		var url = '';
+	}
+	
 	var response = {};
 	$.ajax({
 		url: url,

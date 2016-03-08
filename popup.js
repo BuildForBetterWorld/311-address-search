@@ -1,3 +1,6 @@
+// TO DO
+// ~ if addresses is null, we need to just return a "no complaints" message
+
 window.onload = popupLogic
 var textAddress = null
 
