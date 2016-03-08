@@ -6,7 +6,7 @@
 		{
 			"run_at": "document_end",
 			"matches": [
-				"<all_urls>"
+				"http://*.streeteasy.com/building/*"
 			],
 			"js": [
 				"jquery-1.12.1.min.js",
@@ -20,8 +20,13 @@
 	},
 	"browser_action": {
 		"default_title": "311",
-		"default_icon": "icon.png",
+		"default_icon": "icon16.png",
 		"default_popup": "popup.html"
+	},
+	"icons": {
+		"16": "icon16.png",
+		"48": "icon48.png",
+		"128": "icon128.png"
 	},
 	"permissions": [
 	"activeTab"
