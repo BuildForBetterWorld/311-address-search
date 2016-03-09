@@ -2,14 +2,17 @@
 // Find address
 var rentalSiteDict = {
   streeteasy: {
-    rawAddress: function () {return document.getElementsByTagName('h1')[0].textContent},
+    rawAddress: function () {return document.getElementsByTagName('h1')[0].textContent },
     regex: /\s(\S.*)\s#/
   },
   zillow: {
     rawAddress: function () { return document.getElementsByTagName('title')[0].textContent },
     regex: /\s*(\S.*)\s(#|APT)/
   },
-  zumper: {},
+  zumper: {
+    rawAddress: function () { return document.getElementsByTagName('h2')[0].textContent },
+    regex: /\s*(\S.*)\s#/
+  },
   craigslist: {},
   trulia: {
     rawAddress: function () {return document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent},
@@ -18,7 +21,6 @@ var rentalSiteDict = {
 }
 
 setTimeout(find311Data, 1000)
-
 
 function cleanAddress (site) {
   // obtain raw address 
@@ -66,6 +68,7 @@ function cleanAddress (site) {
   for (i = 0; i < addressArray.length; i++) {
     cleanAddressArray[i] = isAbbreviatedStreet(isNumberedStreet(isDirection(addressArray[i])))
   }
+  console.log(cleanAddressArray)
 
   // returns the urlArray to put into the API request
   var urlBase = cleanAddressArray.join('%20')
