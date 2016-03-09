@@ -1,12 +1,11 @@
 {
 	"manifest_version": 2,
-	"name": "311 for Addresses",
-	"version": "1.0",
+	"name": "Renter Be Aware: NYC Apartment 311 History",
+	"version": "0.0.0.1",
 	"content_scripts": [
 		{
 			"run_at": "document_end",
 			"matches": [
-				// nakedapartments doesn't have addresses. renthop has addresses in no clear identifiable way
 				"http://*.streeteasy.com/building/*",
 				"http://*.streeteasy.com/rental/*",
 				"http://www.trulia.com/*",
@@ -28,7 +27,6 @@
 	"browser_action": {
 		"default_title": "311",
 		"default_icon": "icon16.png"
-		//"default_popup": "popup.html"
 	},
 	"icons": {
 		"16": "icon16.png",
