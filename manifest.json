@@ -1,7 +1,7 @@
 {
 	"manifest_version": 2,
-	"name": "Renter Be Aware: NYC Apartment 311 History",
-	"version": "0.0.0.1",
+	"name": "Renter Be Aware: NYC Apt 311 Complaints",
+	"version": "0.0.0.2",
 	"content_scripts": [
 		{
 			"run_at": "document_end",
