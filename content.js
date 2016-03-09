@@ -6,7 +6,7 @@ var rentalSiteDict = {
   },
   zillow: {
     addressDomTag: 'title',
-    regex: /\s*(\S.*?)\s*(#|APT|,)/
+    regex: /\s*(\S.*?)\s*(#|APT|,|-)/
   },
   zumper: {
     addressDomTag: 'h2',
@@ -14,7 +14,7 @@ var rentalSiteDict = {
   },
   trulia: {
     addressDomTag: '',
-    regex: 
+    regex: ''
   },
   craigslist: {
   	addressDomTag: '.mapaddress',
@@ -62,7 +62,7 @@ function createTagObserver(site) {
 			sendUrlMessage(url)
 		})
 	})
-	var config = { attributes: true, childList: true, characterData: true }
+	var config = { attributes: true, childList: true, characterData: true, subtree: true }
 	observer.observe(target, config)
 }
 
@@ -81,35 +81,12 @@ function cleanAddress (site) {
   // Known issue with streets using "St" for "Saint"
   var streetDict = {'st': 'street', 'st.': 'street', 'ave': 'avenue', 'ave.': 'avenue', 'rd.': 'road', 'rd': 'road', 'blvd': 'boulevard', 'blvd.': 'boulevard', 'pkwy': 'parkway', 'pkwy.': 'parkway'}
   var regexRemoveNd = /(\d+)(st|nd|rd|th)/
+
+
   var cleanAddressArray = []
-
-  function isDirection (item) {
-    if (item.toLowerCase() in ordinalDict) {
-      return ordinalDict[item.toLowerCase()]
-    } else {
-      return item
-    }
-  }
-
-  function isNumberedStreet (item) {
-    if (regexRemoveNd.exec(item)) {
-      return regexRemoveNd.exec(item)[1]
-    } else {
-      return item
-    }
-  }
-
-  function isAbbreviatedStreet (item) {
-    if (item.toLowerCase() in streetDict) {
-      return streetDict[item.toLowerCase()]
-    } else {
-      return item
-    }
-  }
-
-  for (i = 0; i < addressArray.length; i++) {
-    cleanAddressArray[i] = isAbbreviatedStreet(isNumberedStreet(isDirection(addressArray[i])))
-  }
+  addressArray.map(function(elem) {
+  	cleanAddressArray.push(isAbbreviatedStreet(isNumberedStreet(isDirection(elem))))
+  })
 
   // returns the urlArray to put into the API request
   var urlBase = cleanAddressArray.join('%20')
@@ -118,7 +95,22 @@ function cleanAddress (site) {
   console.log(rawAddress, cleanAddressArray, url)
 
   return url
+
+  // utility functions
+  function isDirection (item) {
+    return (item.toLowerCase() in ordinalDict) ? ordinalDict[item.toLowerCase()] : item
+  }
+
+  function isNumberedStreet (item) {
+    return (regexRemoveNd.exec(item)) ? regexRemoveNd.exec(item)[1] : item
+  }
+
+  function isAbbreviatedStreet (item) {
+    return (item.toLowerCase() in streetDict) ? streetDict[item.toLowerCase()] : item
+  }
 }
+
+
 
 
 
