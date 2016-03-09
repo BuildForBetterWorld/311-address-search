@@ -3,7 +3,7 @@
 // zumper: <h1 class="details-address">
 // zillow: <header class="addr"> 
 
-find311Data();
+find311Data()
 
 function cleanTruliaAddress() {
 	var rawAddress = document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent;
@@ -14,45 +14,58 @@ function cleanZillowAddress() {
 	return ''
 }
 
+function cleanZumperAddress () {
+}
 
-function cleanStreetEasyAddress() {
-	// obtain raw address 
-	var rawAddress = document.getElementsByTagName('h1')[0].textContent;
-	// This section splits any address into an array
-	  var regexNoApt = /\s(\S.*)\s#/
-	  var addressNoApt = regexNoApt.exec(rawAddress)[1]
-	  var addressArray = addressNoApt.split(' ')
+function cleanStreetEasyAddress () {
+  // obtain raw address 
+  var rawAddress = document.getElementsByTagName('h1')[0].textContent
 
-	  // This section fixes the number
+  // This section splits any address into an array
+  var regexNoApt = /\s(\S.*)\s#/
+  var addressNoApt = regexNoApt.exec(rawAddress)[1]
+  var addressArray = addressNoApt.split(' ')
 
-	  var ordinalDict = {'w': 'west', 'w.': 'west', 'e': 'east', 'e.': 'east', 'n': 'north', 'n.': 'north', 's': 'south', 's.': 'south'}
-	  var regexRemoveNd = /(\d+)(st|nd|rd|th)/
-	  var cleanAddressArray = []
+  // This section fixes the number
 
-	  function isDirection (item) {
-	    if (item.toLowerCase() in ordinalDict) {
-	      return ordinalDict[item.toLowerCase()]
-	    } else {
-	      return item
-	    }
-	  }
+  var ordinalDict = {'w': 'west', 'w.': 'west', 'e': 'east', 'e.': 'east', 'n': 'north', 'n.': 'north', 's': 'south', 's.': 'south'}
+  // Known issue with streets using "St" for "Saint"
+  var streetDict = {'st': 'street', 'st.': 'street', 'ave': 'avenue', 'ave.': 'avenue', 'rd.': 'road', 'rd': 'road', 'blvd': 'boulevard', 'blvd.': 'boulevard', 'pkwy': 'parkway', 'pkwy.': 'parkway'}
+  var regexRemoveNd = /(\d+)(st|nd|rd|th)/
+  var cleanAddressArray = []
 
-	  function isNumberedStreet (item) {
-	    if (regexRemoveNd.exec(item)) {
-	      return regexRemoveNd.exec(item)[1]
-	    } else {
-	      return item
-	    }
-	  }
+  function isDirection (item) {
+    if (item.toLowerCase() in ordinalDict) {
+      return ordinalDict[item.toLowerCase()]
+    } else {
+      return item
+    }
+  }
 
-	  for (i = 0; i < addressArray.length; i++) {
-	    cleanAddressArray[i] = isNumberedStreet(isDirection(addressArray[i]))
-	  }
+  function isNumberedStreet (item) {
+    if (regexRemoveNd.exec(item)) {
+      return regexRemoveNd.exec(item)[1]
+    } else {
+      return item
+    }
+  }
 
-	  // returns the urlArray to put into the API request
-	  var urlBase = cleanAddressArray.join('%20')
-	  var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
-	  return url
+  function isAbbreviatedStreet (item) {
+    if (item.toLowerCase() in streetDict) {
+      return streetDict[item.toLowerCase()]
+    } else {
+      return item
+    }
+  }
+
+  for (i = 0; i < addressArray.length; i++) {
+    cleanAddressArray[i] = isAbbreviatedStreet(isNumberedStreet(isDirection(addressArray[i])))
+  }
+
+  // returns the urlArray to put into the API request
+  var urlBase = cleanAddressArray.join('%20')
+  var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
+  return url
 }
 
 function find311Data() {
@@ -84,4 +97,4 @@ function find311Data() {
 		}
 	});
 }
-
+  

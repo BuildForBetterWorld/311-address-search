@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(
 		})
 	} else if (request.length === 0) {
 		// turn green
-		chrome.browserAction.setIcon({path: "icon16-red.png",
+		chrome.browserAction.setIcon({path: "icon16-green.png",
 			tabId: sender.tab.id
 		})
 	} 
