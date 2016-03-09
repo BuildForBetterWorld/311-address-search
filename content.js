@@ -3,26 +3,33 @@
 // zumper: <h1 class="details-address">
 // zillow: <header class="addr"> 
 
+var rentalSiteDict = {
+  streeteasy: {
+    rawAddress: function () {return document.getElementsByTagName('h1')[0].textContent},
+    regex: /\s(\S.*)\s#/
+  },
+  zillow: {
+    rawAddress: function () { return document.getElementsByTagName('title')[0].textContent },
+    regex: ''
+  },
+  zumper: {},
+  craigslist: {},
+  trulia: {
+    rawAddress: function () {return document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent},
+    regex: ''
+  }
+}
+
 find311Data()
 
-function cleanTruliaAddress() {
-	var rawAddress = document.getElementsByClassName('h2 headingDoubleSuper')[0].textContent;
-}
-
-function cleanZillowAddress() {
-	var rawAddress = document.getElementsByTagName('title')[0].textContent;
-	return ''
-}
-
-function cleanZumperAddress () {
-}
-
-function cleanStreetEasyAddress () {
+function cleanAddress (site) {
   // obtain raw address 
-  var rawAddress = document.getElementsByTagName('h1')[0].textContent
+  var rawAddress = site.rawAddress()
+  console.log(rawAddress)
 
   // This section splits any address into an array
-  var regexNoApt = /\s(\S.*)\s#/
+  var regexNoApt = site.regex
+  console.log(regexNoApt)
   var addressNoApt = regexNoApt.exec(rawAddress)[1]
   var addressArray = addressNoApt.split(' ')
 
@@ -68,33 +75,32 @@ function cleanStreetEasyAddress () {
   return url
 }
 
-function find311Data() {
-	// identify website and compute api url
-	var site = document.URL;
+function find311Data () {
+  // identify website and compute api url
+  var site = document.URL
 
-	if (site.includes("trulia")) {
-		var url = cleanTruliaAddress();
-	} else if (site.includes("streeteasy")) {
-		var url = cleanStreetEasyAddress();
-	} else if (site.includes("zumper")) {
-		var url = cleanZumperAddress();
-	} else if (site.includes("zillow")) {
-		var url = cleanZillowAddress();
-	} else {
-		var url = '';
-	}
-	
-	$.ajax({
-		url: url,
-		crossDomain: true,
-		success: function(res) {
-			chrome.runtime.sendMessage(res);
-			//console.log("sent res: ", res);
-		},
-		error: function(res) {
-			chrome.runtime.sendMessage(res);
-			//console.log("sent err: ", res);
-		}
-	});
+  if (site.includes('trulia')) {
+    var url = cleanAddress(rentalSiteDict.trulia)
+  } else if (site.includes('streeteasy')) {
+    var url = cleanAddress(rentalSiteDict.streeteasy)
+  } else if (site.includes('zumper')) {
+    var url = cleanAddress(rentalSiteDict.zumper)
+  } else if (site.includes('zillow')) {
+    var url = cleanAddress(rentalSiteDict.zillow)
+  } else {
+    var url = ''
+  }
+
+  $.ajax({
+    url: url,
+    crossDomain: true,
+    success: function (res) {
+      chrome.runtime.sendMessage(res)
+    // console.log("sent res: ", res)
+    },
+    error: function (res) {
+      chrome.runtime.sendMessage(res)
+    // console.log("sent err: ", res)
+    }
+  })
 }
-  
