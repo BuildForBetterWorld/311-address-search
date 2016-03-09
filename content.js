@@ -11,6 +11,9 @@ function cleanTruliaAddress () {
 
 }
 
+function cleanZumperAddress () {
+}
+
 function cleanStreetEasyAddress () {
   // obtain raw address 
   var rawAddress = document.getElementsByTagName('h1')[0].textContent
@@ -23,6 +26,8 @@ function cleanStreetEasyAddress () {
   // This section fixes the number
 
   var ordinalDict = {'w': 'west', 'w.': 'west', 'e': 'east', 'e.': 'east', 'n': 'north', 'n.': 'north', 's': 'south', 's.': 'south'}
+  // Known issue with streets using "St" for "Saint"
+  var streetDict = {'st': 'street', 'st.': 'street', 'ave': 'avenue', 'ave.': 'avenue', 'rd.': 'road', 'rd': 'road', 'blvd': 'boulevard', 'blvd.': 'boulevard', 'pkwy': 'parkway', 'pkwy.': 'parkway'}
   var regexRemoveNd = /(\d+)(st|nd|rd|th)/
   var cleanAddressArray = []
 
@@ -42,13 +47,22 @@ function cleanStreetEasyAddress () {
     }
   }
 
+  function isAbbreviatedStreet (item) {
+    if (item.toLowerCase() in streetDict) {
+      return streetDict[item.toLowerCase()]
+    } else {
+      return item
+    }
+  }
+
   for (i = 0; i < addressArray.length; i++) {
-    cleanAddressArray[i] = isNumberedStreet(isDirection(addressArray[i]))
+    cleanAddressArray[i] = isAbbreviatedStreet(isNumberedStreet(isDirection(addressArray[i])))
   }
 
   // returns the urlArray to put into the API request
   var urlBase = cleanAddressArray.join('%20')
   var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
+  alert(url)
   return url
 }
 

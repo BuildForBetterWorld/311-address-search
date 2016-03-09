@@ -26,7 +26,7 @@ function popupLogic () {
 
     })
     $('#disclaimer').append('<p style="padding: 10px">311 complaints are registered against a building, and not a specific apartment. As a result, these incidents could have come from any apartment in this building, and not necessarily this one. For more information, <a target="_blank" href="http://www1.nyc.gov/311/">visit NYC 311</a>.</p>')
-    $('#headline').append('<h1> Historical 311 Complaints from ' + textAddress + '</h1>')
+    $('#headline').append('<h1>311 Complaints from ' + textAddress + '</h1>')
     // window.scrollTo(0, 0)
 
   })
