@@ -41,32 +41,28 @@ function sendUrlMessage (url) {
     crossDomain: true,
     success: function (res) {
       chrome.runtime.sendMessage(res)
-    // console.log("sent res: ", res)
     },
     error: function (res) {
       chrome.runtime.sendMessage(res)
-    // console.log("sent err: ", res)
     }
   })
 }
 
 function createTagObserver(site) {
 	var target = $(site.addressDomTag).get(0)
-	console.log(target)
 	var observer = new MutationObserver(function(mutations) {
 		mutations.forEach(function(mutation) {
-			console.log(mutation.addedNodes.item(0))
 			var url = cleanAddress(site)
 			sendUrlMessage(url)
 		})
 	})
 	var config = { attributes: true, childList: true, characterData: true, subtree: true }
 	observer.observe(target, config)
+}
 
 function cleanAddress (site) {
   // obtain raw address 
   var rawAddress = $(site.addressDomTag).text()
-  console.log(rawAddress)
 
   // This section splits any address into an array
   var regexNoApt = site.regex
@@ -88,9 +84,6 @@ function cleanAddress (site) {
   // returns the urlArray to put into the API request
   var urlBase = cleanAddressArray.join('%20')
   var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
-  
-  console.log(rawAddress, cleanAddressArray, url)
-
   return url
 
   // utility functions
