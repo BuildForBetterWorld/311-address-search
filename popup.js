@@ -24,11 +24,12 @@ function popupLogic () {
         textAddress = obj.incident_address
         $('.complaintList').append('<div class="complaintItem"><h2>' + obj.created_date + '</h2> <div class="moreInfo"> <p><span class="category">Incident Description:</span> ' + obj.descriptor + '</p><p><span class="category">Category:</span> ' + obj.complaint_type + '</p><p><span class="category">Close date:</span> ' + obj.closed_date + '</p><p><span class="category">Resolution description:</span> ' + obj.resolution_description + '</p></div></div>')
       })
-      $('#disclaimer').append('<p style="padding: 10px">311 complaints are registered against a building, and not a specific apartment. As a result, these incidents could have come from any apartment in this building, and not necessarily this one. For more information, <a target="_blank" href="http://www1.nyc.gov/311/">visit NYC 311</a>.</p>')
-      $('#headline').append('<h1>311 Complaints from ' + textAddress + '</h1>')
+      $('#disclaimer').append('<p style="padding: 10px">311 complaints are registered against a building, and not a specific apartment. As a result, these incidents could have come from any apartment in this building, and not necessarily this one. For more information, <a target="_blank" href="http://www1.nyc.gov/apps/311srmap/">visit NYC 311</a>.</p>')
+      $('#headline').append('<h1>311 Complaints from<br /> ' + textAddress + '</h1>')
 
     } else {
-      $('.complaintList').append("<span>No results, but the address may be formatted in a way we didn't expect</span>")
+      $('#headline').append("<h1>We couldn't find any 311 complaints against this address!</h1>")
+      $('.complaintList').append('This might be good news. Or it might mean the address was in an unexpected format. To be extra sure, <a target="_blank" href="http://www1.nyc.gov/apps/311srmap/">search for the address on the official NYC 311 website.</a>')
     }
   })
 }

@@ -9,8 +9,8 @@
 				// nakedapartments doesn't have addresses. renthop has addresses in no clear identifiable way
 				"http://*.streeteasy.com/building/*",
 				"http://*.streeteasy.com/rental/*",
-				"http://www.trulia.com/property/*",
-				"https://www.zumper.com/apartments-for-rent/*",
+				"http://www.trulia.com/*",
+				"https://www.zumper.com/*",
 				"http://www.zillow.com/homes/for_rent/*",
 				"http://newyork.craigslist.org/*",
 				"https://www.padmapper.com/*"

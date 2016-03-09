@@ -1,0 +1,39 @@
+body {
+	width: 400px;
+	/*height: 100px;*/
+	background-color: #FFFFF0;
+	padding: 5px 10px 10px 10px;
+}
+
+h1 {
+	font-size: 16px;
+
+}
+
+h2 {
+	font-size: 14px;
+	margin: 0px;
+}
+
+.moreInfo: {
+	margin-bottom: 20px;
+}
+
+.complaintItem {
+	background-color: #e6e6e6;
+	padding: 10px;
+	margin-bottom: 10px;
+}
+
+.three {
+	font-size: 10px;
+	text-align: center;
+}
+
+.category {
+	font-weight: bold;
+}
+
+#headline {
+	text-align: center;
+}

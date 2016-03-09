@@ -1,55 +1,53 @@
-
 var rentalSiteDict = {
   streeteasy: {
     addressDomTag: 'h1',
-    regex: /\s(\S.*)\s#/  
+    regex: /\s(\S.*)\s#/
   },
   zillow: {
     addressDomTag: 'title',
     regex: /\s*(\S.*?)\s*(#|APT|,|-)/
   },
   zumper: {
-    addressDomTag: 'h2',
-    regex: /\s*(\S.*)\s#/
+    addressDomTag: '.address',
+    regex: /\s*(\S.*?)(\s#|,)/
   },
   trulia: {
-    addressDomTag: '',
-    regex: ''
+    addressDomTag: 'span[itemprop=streetAddress]',
+    regex: /(.*?)(\s#|$)/
   },
   craigslist: {
-  	addressDomTag: '.mapaddress',
-  	regex: /\s*(\S.*)\s(#|APT)/
-  }, 
+    addressDomTag: '.mapaddress',
+    regex: /\s*(\S.*)\s(#|APT)/
+  },
   padmapper: {
-  	addressDomTag: '.listing-address',
-  	regex: /\s*(\S.*?),/
+    addressDomTag: '.listing-address',
+    regex: /\s*(\S.*?),/
   }
 }
 
-setTimeout(function() {
-	var site = document.URL
-	var regex = /(trulia|streeteasy|zumper|zillow)/
-	var siteRoot = regex.exec(site)[0] 
-	var siteObject = rentalSiteDict[siteRoot]
-	var url = cleanAddress(siteObject)
-	createTagObserver(siteObject)
-	sendUrlMessage(url)
-}, 2000)
+setTimeout(function () {
+  var site = document.URL
+  var regex = /(trulia|streeteasy|zumper|zillow|craigslist|padmapper)/
+  var siteRoot = regex.exec(site)[0]
+  var siteObject = rentalSiteDict[siteRoot]
+  var url = cleanAddress(siteObject)
+  createTagObserver(siteObject)
+  sendUrlMessage(url)
+}, 3000)
 
-
-function sendUrlMessage(url) {
-	$.ajax({
-		url: url,
-		crossDomain: true,
-		success: function (res) {
-		  chrome.runtime.sendMessage(res)
-		// console.log("sent res: ", res)
-		},
-		error: function (res) {
-		  chrome.runtime.sendMessage(res)
-		// console.log("sent err: ", res)
-		}
-	})
+function sendUrlMessage (url) {
+  $.ajax({
+    url: url,
+    crossDomain: true,
+    success: function (res) {
+      chrome.runtime.sendMessage(res)
+    // console.log("sent res: ", res)
+    },
+    error: function (res) {
+      chrome.runtime.sendMessage(res)
+    // console.log("sent err: ", res)
+    }
+  })
 }
 
 function createTagObserver(site) {
@@ -64,7 +62,6 @@ function createTagObserver(site) {
 	})
 	var config = { attributes: true, childList: true, characterData: true, subtree: true }
 	observer.observe(target, config)
-}
 
 function cleanAddress (site) {
   // obtain raw address 
@@ -109,12 +106,4 @@ function cleanAddress (site) {
     return (item.toLowerCase() in streetDict) ? streetDict[item.toLowerCase()] : item
   }
 }
-
-
-
-
-
-
-
-
 
