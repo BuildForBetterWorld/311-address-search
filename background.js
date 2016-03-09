@@ -2,6 +2,7 @@
 // storage for access by popup
 var tabInfo = {}
 
+// listener for request message from content script
 chrome.runtime.onMessage.addListener(
   function(request, sender, sendResponse) {
   	// store request information in global extension storage
@@ -30,3 +31,5 @@ chrome.runtime.onMessage.addListener(
 		})
 	} 
 })
+
+// listener to re-execute content script on page reload

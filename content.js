@@ -1,8 +1,5 @@
-// TO DO
-// ~ match on zip code to make sure we're getting the right borough
-// zumper: <h1 class="details-address">
-// zillow: <header class="addr"> 
 
+// Find address
 var rentalSiteDict = {
   streeteasy: {
     rawAddress: function () {return document.getElementsByTagName('h1')[0].textContent},
@@ -10,7 +7,7 @@ var rentalSiteDict = {
   },
   zillow: {
     rawAddress: function () { return document.getElementsByTagName('title')[0].textContent },
-    regex: ''
+    regex: /\s*(\S.*)\s(#|APT)/
   },
   zumper: {},
   craigslist: {},
@@ -20,7 +17,8 @@ var rentalSiteDict = {
   }
 }
 
-find311Data()
+setTimeout(find311Data, 1000)
+
 
 function cleanAddress (site) {
   // obtain raw address 
@@ -104,3 +102,12 @@ function find311Data () {
     }
   })
 }
+
+// event listener for title change
+
+
+
+
+
+
+
