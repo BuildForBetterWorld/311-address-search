@@ -48,16 +48,16 @@ function sendUrlMessage (url) {
   })
 }
 
-function createTagObserver(site) {
-	var target = $(site.addressDomTag).get(0)
-	var observer = new MutationObserver(function(mutations) {
-		mutations.forEach(function(mutation) {
-			var url = cleanAddress(site)
-			sendUrlMessage(url)
-		})
-	})
-	var config = { attributes: true, childList: true, characterData: true, subtree: true }
-	observer.observe(target, config)
+function createTagObserver (site) {
+  var target = $(site.addressDomTag).get(0)
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      var url = cleanAddress(site)
+      sendUrlMessage(url)
+    })
+  })
+  var config = { attributes: true, childList: true, characterData: true, subtree: true }
+  observer.observe(target, config)
 }
 
 function cleanAddress (site) {
@@ -75,15 +75,14 @@ function cleanAddress (site) {
   var streetDict = {'st': 'street', 'st.': 'street', 'ave': 'avenue', 'ave.': 'avenue', 'rd.': 'road', 'rd': 'road', 'blvd': 'boulevard', 'blvd.': 'boulevard', 'pkwy': 'parkway', 'pkwy.': 'parkway'}
   var regexRemoveNd = /(\d+)(st|nd|rd|th)/
 
-
   var cleanAddressArray = []
-  addressArray.map(function(elem) {
-  	cleanAddressArray.push(isAbbreviatedStreet(isNumberedStreet(isDirection(elem))))
+  addressArray.map(function (elem) {
+    cleanAddressArray.push(isAbbreviatedStreet(isNumberedStreet(isDirection(elem))))
   })
 
   // returns the urlArray to put into the API request
   var urlBase = cleanAddressArray.join('%20')
-  var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
+  var url = 'https://data.cityofnewyork.us/resource/erm2-nwe9.json?$$app_token=f9EzR88vvn6FILst4doCHuMYi&$select=incident_address,complaint_type,descriptor,resolution_description,created_date,closed_date,incident_zip&incident_address=%27' + urlBase + '%27'
   return url
 
   // utility functions
@@ -99,4 +98,3 @@ function cleanAddress (site) {
     return (item.toLowerCase() in streetDict) ? streetDict[item.toLowerCase()] : item
   }
 }
-
