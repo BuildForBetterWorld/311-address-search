@@ -1,7 +1,7 @@
 var rentalSiteDict = {
   streeteasy: {
     addressDomTag: 'h1',
-    regex: /\s(\S.*)\s#/
+    regex: /\s(\S.*)(\s#|$)/
   },
   zillow: {
     addressDomTag: 'title',
